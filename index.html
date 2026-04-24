@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes">
-<title>专利法专题(1-30) 全文版 | 交互式思维导图 v4</title>
+<title>2026专利法专题讲座</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:#f5f5f5;color:#333;line-height:1.8;font-size:15px;-webkit-font-smoothing:antialiased}
@@ -64,7 +64,7 @@ em{color:#d84315;font-style:normal}
 <body>
 
 <div class="header">
-<h1>📖 2026年专利法专题讲座(1-11)</h1>
+<h1>2026专利法专题讲座</h1>
 <p>全文版 · 交互式思维导图(可展开/全屏/缩放) · 韩龙编写</p>
 </div>
 
@@ -3158,22 +3158,21 @@ em{color:#d84315;font-style:normal}
 </div>
 
 <footer style="background:#1a237e;color:#fff;text-align:center;padding:20px 16px;font-size:12px;margin:12px;border-radius:10px">
-<p style="color:rgba(255,255,255,.8);margin-bottom:6px">专利法专题(1-11) 全文版 | H5移动端适配</p>
-<p style="color:rgba(255,255,255,.5)">资料来源：专利法专题扫描版 | 仅供学习交流使用</p>
+<p style="color:rgba(255,255,255,.8);margin-bottom:6px">2026专利法专题讲座 | H5移动端适配</p>
+<p style="color:rgba(255,255,255,.5)">仅供学习交流使用</p>
 </footer>
 </div>
 
-<nav class="nav-bar">
+<nav class="nav-bar" id="smart-nav">
 <a href="#toc" class="nav-btn">目录</a>
-<a href="#t1" class="nav-btn">专题一</a>
-<a href="#t15" class="nav-btn">实审</a>
-<a href="#t25" class="nav-btn">侵权</a>
-<a href="#t30" class="nav-btn">文献</a>
+<a id="nav-prev" class="nav-btn">↑ 上一专题</a>
+<span id="nav-current" class="nav-btn" style="opacity:0.8;font-size:11px"></span>
+<a id="nav-next" class="nav-btn">下一专题 ↓</a>
 </nav>
 
 <footer style="background:linear-gradient(135deg,#1a237e,#283593);color:#fff;text-align:center;padding:20px 16px;font-size:12px;margin:12px;border-radius:10px">
-<p style="color:rgba(255,255,255,.8);margin-bottom:6px">专利法专题(1-30) 全量版 v4 | H5移动端适配</p>
-<p style="color:rgba(255,255,255,.5)">资料来源：2026年专利代理师考试专题讲座(1-11+12-30) | 共289页 | 仅供学习交流使用</p>
+<p style="color:rgba(255,255,255,.8);margin-bottom:6px">2026专利法专题讲座 | H5移动端适配</p>
+<p style="color:rgba(255,255,255,.5)">仅供学习交流使用</p>
 </footer>
 
 
@@ -3231,20 +3230,141 @@ em{color:#d84315;font-style:normal}
   });
 })();
 
+// ===== 智能导航栏：动态显示上一专题 / 下一专题 =====
+(function(){
+  var sections = [];
+  document.querySelectorAll('.section[id^="t"]').forEach(function(s){
+    sections.push({id: s.id, el: s, title: s.querySelector('.section-title') ? s.querySelector('.section-title').textContent.trim() : s.id});
+  });
+
+  function updateNav(){
+    var scrollTop = window.scrollY || window.pageYOffset;
+    var viewH = window.innerHeight;
+    var currentIdx = -1;
+
+    for(var i = sections.length - 1; i >= 0; i--){
+      if(sections[i].el.offsetTop <= scrollTop + viewH * 0.3){ currentIdx = i; break; }
+    }
+
+    var prevBtn = document.getElementById('nav-prev');
+    var nextBtn = document.getElementById('nav-next');
+    var curLabel = document.getElementById('nav-current');
+    var prevBtnB = document.getElementById('nav-prev-b');
+    var nextBtnB = document.getElementById('nav-next-b');
+    var curLabelB = document.getElementById('nav-cur-b');
+
+    if(currentIdx >= 0){
+      // 当前专题
+      var curTitle = sections[currentIdx].title.replace(/^[^\s]+\s*/,'').substring(0,8);
+      if(curLabel) curLabel.textContent = curTitle;
+      if(curLabelB) curLabelB.textContent = curTitle;
+
+      // 上一专题
+      if(currentIdx > 0){
+        var prevId = sections[currentIdx-1].id;
+        var prevTitle = sections[currentIdx-1].title.replace(/^[^\s]+\s*/,'').replace(/专题/,'').trim();
+        if(prevBtn){prevBtn.href='#'+prevId;prevBtn.textContent='↑ '+prevTitle;}
+        if(prevBtnB){prevBtnB.href='#'+prevId;prevBtnB.textContent='↑ '+prevTitle;}
+      } else {
+        if(prevBtn){prevBtn.href='#toc';prevBtn.textContent='↑ 目录';}
+        if(prevBtnB){prevBtnB.href='#toc';prevBtnB.textContent='↑ 目录';}
+      }
+
+      // 下一专题
+      if(currentIdx < sections.length - 1){
+        var nextId = sections[currentIdx+1].id;
+        var nextTitle = sections[currentIdx+1].title.replace(/^[^\s]+\s*/,'').replace(/专题/,'').trim();
+        if(nextBtn){nextBtn.href='#'+nextId;nextBtn.textContent=nextTitle+' ↓';}
+        if(nextBtnB){nextBtnB.href='#'+nextId;nextBtnB.textContent=nextTitle+' ↓';}
+      } else {
+        if(nextBtn){nextBtn.href='#toc';nextBtn.textContent='回目录 ↓';}
+        if(nextBtnB){nextBtnB.href='#toc';nextBtnB.textContent='回目录 ↓';}
+      }
+
+      // 存储当前专题到 localStorage
+      try{localStorage.setItem('patent_law_current',''+currentIdx);}catch(e){}
+    } else {
+      if(curLabel)curLabel.textContent='';
+      if(curLabelB)curLabelB.textContent='';
+    }
+  }
+
+  // 滚动时更新
+  var timer = null;
+  window.addEventListener('scroll', function(){
+    if(timer) return;
+    timer = setTimeout(function(){ updateNav(); timer=null; }, 50);
+  }, {passive:true});
+
+  updateNav();
+})();
+
+// ===== 阅读位置记忆（localStorage）=====
+(function(){
+  var STORAGE_KEY = 'patent_law_scroll_pos';
+  var SECTION_KEY = 'patent_law_current';
+
+  // 页面加载时恢复位置
+  window.addEventListener('load', function(){
+    try{
+      var savedPos = localStorage.getItem(STORAGE_KEY);
+      if(savedPos && parseInt(savedPos) > 200){
+        setTimeout(function(){
+          window.scrollTo(0, parseInt(savedPos));
+          // 触发导航更新
+          window.dispatchEvent(new Event('scroll'));
+        }, 150);
+      } else {
+        // 如果没有滚动位置，但有当前专题记录，尝试跳转到该专题
+        var currentIdx = localStorage.getItem(SECTION_KEY);
+        if(currentIdx !== null){
+          var sections = document.querySelectorAll('.section[id^="t"]');
+          var idx = parseInt(currentIdx);
+          if(idx >= 0 && idx < sections.length){
+            setTimeout(function(){
+              sections[idx].scrollIntoView({behavior:'instant', block:'start'});
+            }, 150);
+          }
+        }
+      }
+    } catch(e){}
+
+    // 定期保存位置（每2秒）
+    setInterval(function(){
+      try{
+        localStorage.setItem(STORAGE_KEY, '' + (window.scrollY || window.pageYOffset || 0));
+      }catch(e){}
+    }, 2000);
+
+    // 页面隐藏时保存（切应用、锁屏等）
+    document.addEventListener('visibilitychange', function(){
+      if(document.hidden){
+        try{localStorage.setItem(STORAGE_KEY, '' + (window.scrollY || window.pageYOffset || 0));}catch(e){}
+      }
+    });
+
+    // 页面卸载前保存
+    window.addEventListener('beforeunload', function(){
+      try{localStorage.setItem(STORAGE_KEY, '' + (window.scrollY || window.pageYOffset || 0));}catch(e){}
+    });
+  });
+})();
+
 </script>
 </body>
 </html>
 
 <!-- 页脚 -->
 <div class="footer-info">
-<p>📖 2026年专利法专题讲座(1-11) 全文版 v4</p>
-<p>共97页扫描件全部内容 | 包含立法层面解读 + 交互式思维导图</p>
-<p style="font-size:11px;color:#aaa;margin-top:8px;">本页面仅供学习参考使用，不构成法律意见 · 韩龙编写</p>
+<p>2026专利法专题讲座</p>
+<p>共30个专题 | 交互式思维导图版</p>
+<p style="font-size:11px;color:#aaa;margin-top:8px;">仅供学习参考使用</p>
 </div>
 
-<!-- 导航栏 -->
-<div class="nav-bar">
+<!-- 智能导航栏 -->
+<div class="nav-bar" id="smart-nav-bottom">
 <a href="#toc" class="nav-btn">↑ 目录</a>
-<a href="#t6" class="nav-btn">← 专题六</a>
-<a href="#t7" class="nav-btn">专题七 →</a>
+<a id="nav-prev-b" class="nav-btn">↑ 上一专题</a>
+<span id="nav-cur-b" class="nav-btn" style="opacity:0.8;font-size:11px;min-width:60px;text-align:center"></span>
+<a id="nav-next-b" class="nav-btn">下一专题 ↓</a>
 </div>
